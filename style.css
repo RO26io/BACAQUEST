@@ -1,0 +1,110 @@
+
+:root {
+  --bg:#f6f7fb;
+  --card:#ffffff;
+  --text:#1f2937;
+  --muted:#6b7280;
+  --primary:#6c5ce7;
+  --primary2:#8b5cf6;
+  --success:#10b981;
+  --danger:#ef4444;
+  --warning:#f59e0b;
+  --border:#e5e7eb;
+  --shadow:0 14px 35px rgba(31,41,55,.10);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  background:linear-gradient(180deg,#f2f0ff 0,#f8fafc 38%,#eefdf6 100%);
+  color:var(--text);
+  min-height:100vh;
+}
+button,input{font:inherit}
+button{cursor:pointer}
+.topbar{
+  padding:18px clamp(16px,4vw,42px);
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(255,255,255,.9);
+  position:sticky;top:0;z-index:20;
+  border-bottom:1px solid var(--border);
+  backdrop-filter:blur(8px)
+}
+.topbar h1{margin:0;font-size:1.5rem}.topbar p{margin:3px 0 0;color:var(--muted)}
+main{max-width:1100px;margin:0 auto;padding:26px 16px 60px}
+.screen{display:none}.screen.active{display:block}
+.hero-card,.panel,.game-card,.result-card,.rank-card{
+  background:var(--card);border:1px solid var(--border);border-radius:24px;
+  box-shadow:var(--shadow)
+}
+.hero-card{padding:24px;display:flex;align-items:center;gap:18px}
+.avatar{width:72px;height:72px;border-radius:22px;background:#fff3c4;display:grid;place-items:center;font-size:2.2rem}
+.hero-card h2{margin:0 0 8px}
+.stats{display:flex;gap:10px;flex-wrap:wrap}.stats span{
+  background:#f7f7fb;padding:8px 12px;border-radius:999px
+}
+.action-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:18px 0}
+button{border:0;border-radius:14px;padding:13px 16px;font-weight:700;transition:.2s}
+button:hover{transform:translateY(-1px)}
+.primary-btn{background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff}
+.secondary-btn{background:#fff;border:1px solid var(--border);color:var(--text)}
+.danger-btn{background:#fff0f0;color:#b91c1c;border:1px solid #fecaca}
+.small{padding:9px 12px;border-radius:11px}
+.panel{padding:20px;margin-top:18px}.panel h3{margin-top:0}
+.name-row{display:flex;gap:10px}.name-row input{flex:1;padding:13px;border-radius:12px;border:1px solid var(--border);outline:none}
+.progress-track{height:12px;border-radius:999px;background:#ececf4;overflow:hidden}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,#22c55e,#10b981);transition:.3s}
+.section-title{display:flex;align-items:flex-start;gap:14px;margin-bottom:18px}.section-title h2{margin:0}.section-title p{margin:4px 0;color:var(--muted)}
+.world-section{margin:24px 0}
+.world-section h3{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.level-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px}
+.level-card{
+  background:#fff;border:1px solid var(--border);border-radius:18px;padding:16px;text-align:left;min-height:110px;
+  box-shadow:0 8px 18px rgba(31,41,55,.05)
+}
+.level-card.locked{opacity:.48;filter:grayscale(.4)}
+.level-card.completed{border-color:#a7f3d0;background:#f0fdf4}
+.level-card .num{font-size:1.4rem;font-weight:900}.level-card small{display:block;color:var(--muted);margin-top:6px}
+.stars-mini{margin-top:8px;letter-spacing:2px}
+.game-header{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;margin-bottom:14px}
+.level-title{font-weight:900;font-size:1.2rem}.world-title{color:var(--muted)}
+.lives{font-size:1.25rem;white-space:nowrap}
+.game-card{padding:clamp(20px,5vw,44px);text-align:center;min-height:420px}
+.game-meta{display:flex;justify-content:space-between;color:var(--muted);font-weight:700}
+.challenge-type{margin:22px auto 10px;display:inline-block;padding:6px 12px;border-radius:999px;background:#ede9fe;color:#5b21b6;font-size:.82rem;font-weight:900}
+#questionText{font-size:clamp(1.6rem,5vw,2.4rem);margin:12px 0 24px}
+.question-image{font-size:4rem;min-height:10px}
+.answer-area{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;max-width:680px;margin:0 auto}
+.answer-btn{background:#fff;border:2px solid #ddd6fe;color:#312e81;font-size:1.08rem;padding:16px}
+.answer-btn.correct{background:#ecfdf5;border-color:#34d399;color:#065f46}
+.answer-btn.wrong{background:#fef2f2;border-color:#f87171;color:#991b1b}
+.read-aloud{
+  border:2px dashed #c4b5fd;border-radius:18px;padding:20px;background:#faf5ff
+}
+.read-aloud p{margin-top:0;color:var(--muted)}
+.teacher-check{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:14px}
+.feedback{min-height:34px;margin:18px 0 10px;font-weight:900}
+.feedback.ok{color:#059669}.feedback.bad{color:#dc2626}
+.hidden{display:none!important}
+.power-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+.power-bar button{background:#fff;border:1px solid var(--border);padding:10px 8px;font-size:.86rem}
+.result-card{max-width:700px;margin:20px auto;padding:40px;text-align:center}
+.trophy{font-size:5rem}.result-card h2{font-size:2rem;margin:8px 0}
+.stars{font-size:2rem;margin:12px 0}
+.result-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px 0}
+.result-stats div{background:#f8fafc;border-radius:15px;padding:16px}.result-stats span{display:block;color:var(--muted);font-size:.85rem}.result-stats b{font-size:1.3rem}
+.rank-card{padding:24px;margin-bottom:18px}
+.badge-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.badge{background:#fff;border:1px solid var(--border);border-radius:18px;padding:18px;text-align:center}
+.badge.locked{opacity:.35;filter:grayscale(1)}
+.badge .icon{font-size:2.3rem}
+.teacher-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+.metric{background:#fff;border:1px solid var(--border);border-radius:18px;padding:18px;box-shadow:0 8px 18px rgba(31,41,55,.05)}
+.metric span{display:block;color:var(--muted)}.metric b{font-size:1.6rem}
+.table-wrap{overflow:auto}table{width:100%;border-collapse:collapse}th,td{padding:10px;border-bottom:1px solid var(--border);text-align:left}th{font-size:.85rem;color:var(--muted)}
+@media(max-width:640px){
+  .topbar{align-items:flex-start;gap:10px}.topbar p{display:none}
+  .game-header{grid-template-columns:auto 1fr}.lives{grid-column:1/-1;text-align:right}
+  .power-bar{grid-template-columns:repeat(2,1fr)}
+  .result-stats{grid-template-columns:1fr}
+}

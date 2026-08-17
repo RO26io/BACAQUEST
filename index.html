@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#6c5ce7" />
+  <title>BACAQUEST - Pengembaraan Bijak Baca</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+    <header class="topbar">
+      <div>
+        <h1>🎮 BACAQUEST</h1>
+        <p>Pengembaraan Bijak Baca</p>
+      </div>
+      <button id="teacherBtn" class="secondary-btn">👩‍🏫 Dashboard Guru</button>
+    </header>
+
+    <main>
+      <section id="homeScreen" class="screen active">
+        <div class="hero-card">
+          <div class="avatar">🧒</div>
+          <div>
+            <h2 id="playerNameDisplay">Pemain</h2>
+            <div class="stats">
+              <span>⭐ <b id="xpDisplay">0</b> XP</span>
+              <span>🪙 <b id="coinDisplay">0</b></span>
+              <span>🔥 <b id="streakDisplay">0</b> hari</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="action-grid">
+          <button id="continueBtn" class="primary-btn">▶ Sambung Bermain</button>
+          <button id="mapBtn" class="secondary-btn">🗺️ Peta Dunia</button>
+          <button id="profileBtn" class="secondary-btn">🏅 Pencapaian</button>
+          <button id="resetBtn" class="danger-btn">↺ Reset Data</button>
+        </div>
+
+        <div class="panel">
+          <h3>Nama Pemain</h3>
+          <div class="name-row">
+            <input id="playerNameInput" placeholder="Masukkan nama murid" maxlength="30" />
+            <button id="saveNameBtn" class="primary-btn small">Simpan</button>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3>🎯 Misi Hari Ini</h3>
+          <p>Selesaikan sekurang-kurangnya satu level dan kumpul XP.</p>
+          <div class="progress-track"><div id="dailyProgress" class="progress-fill"></div></div>
+        </div>
+      </section>
+
+      <section id="mapScreen" class="screen">
+        <div class="section-title">
+          <button class="backBtn secondary-btn small">← Kembali</button>
+          <div>
+            <h2>🗺️ Peta Dunia BACAQUEST</h2>
+            <p>Lengkapkan level untuk membuka level seterusnya.</p>
+          </div>
+        </div>
+        <div id="worldMap"></div>
+      </section>
+
+      <section id="gameScreen" class="screen">
+        <div class="game-header">
+          <button class="backBtn secondary-btn small">← Keluar</button>
+          <div>
+            <div id="levelTitle" class="level-title">Level</div>
+            <div id="worldTitle" class="world-title"></div>
+          </div>
+          <div class="lives" id="livesDisplay">❤️❤️❤️</div>
+        </div>
+
+        <div class="game-card">
+          <div class="game-meta">
+            <span id="questionCounter">1/5</span>
+            <span>⏱️ <b id="timerDisplay">20</b>s</span>
+          </div>
+
+          <div id="challengeType" class="challenge-type">MISI</div>
+          <h2 id="questionText">Soalan</h2>
+          <div id="questionImage" class="question-image"></div>
+
+          <div id="answerArea" class="answer-area"></div>
+
+          <div id="feedback" class="feedback"></div>
+          <button id="nextQuestionBtn" class="primary-btn hidden">Soalan Seterusnya</button>
+        </div>
+
+        <div class="power-bar">
+          <button data-power="hint">💡 Hint <span id="hintCount">0</span></button>
+          <button data-power="shield">🛡️ Shield <span id="shieldCount">0</span></button>
+          <button data-power="skip">🔄 Skip <span id="skipCount">0</span></button>
+          <button data-power="double">⚡ Double XP <span id="doubleCount">0</span></button>
+        </div>
+      </section>
+
+      <section id="resultScreen" class="screen">
+        <div class="result-card">
+          <div class="trophy">🏆</div>
+          <h2 id="resultTitle">LEVEL COMPLETE!</h2>
+          <p id="resultMessage"></p>
+          <div class="stars" id="resultStars">⭐⭐⭐</div>
+          <div class="result-stats">
+            <div><span>XP</span><b id="earnedXp">+0</b></div>
+            <div><span>Coin</span><b id="earnedCoins">+0</b></div>
+            <div><span>Betul</span><b id="correctCount">0</b></div>
+          </div>
+          <div class="action-grid">
+            <button id="replayBtn" class="secondary-btn">↻ Main Semula</button>
+            <button id="nextLevelBtn" class="primary-btn">Level Seterusnya →</button>
+            <button id="resultHomeBtn" class="secondary-btn">🏠 Menu Utama</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="profileScreen" class="screen">
+        <div class="section-title">
+          <button class="backBtn secondary-btn small">← Kembali</button>
+          <div>
+            <h2>🏅 Pencapaian</h2>
+            <p>Badge dan rekod bacaan pemain.</p>
+          </div>
+        </div>
+        <div id="rankCard" class="rank-card"></div>
+        <div id="badgeGrid" class="badge-grid"></div>
+      </section>
+
+      <section id="teacherScreen" class="screen">
+        <div class="section-title">
+          <button class="backBtn secondary-btn small">← Kembali</button>
+          <div>
+            <h2>👩‍🏫 Dashboard Guru</h2>
+            <p>Ringkasan kemajuan pada peranti ini.</p>
+          </div>
+        </div>
+        <div id="teacherSummary" class="teacher-grid"></div>
+        <div class="panel">
+          <h3>Prestasi Mengikut Level</h3>
+          <div id="teacherLevelTable" class="table-wrap"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
