@@ -96,17 +96,25 @@ function updateStreak(){
 }
 
 function renderMap(){
-  const map=$("worldMap"); map.innerHTML="";
+  const map=$("worldMap"); map.innerHTML=""; map.className="world-map-shell";
+  const hint=document.createElement("div"); hint.className="map-visual-hint";
+  hint.innerHTML="👆 <strong>Tekan nombor dunia</strong> untuk mula bermain <span>• Pada telefon, leret peta ke kiri atau kanan</span>";
+  const scroller=document.createElement("div"); scroller.className="world-map-scroll";
+  const visual=document.createElement("div"); visual.className="world-map-visual";
+  const image=document.createElement("img"); image.src="assets/peta-dunia-misi-busaku.png"; image.alt="Peta Dunia Misi Busaku dengan lima dunia pembelajaran";
+  visual.appendChild(image);
+  const positions=[null,{left:18,top:37},{left:37,top:62},{left:56,top:43},{left:79,top:63},{left:86,top:32}];
   LEVELS.forEach(level=>{
-    const section=document.createElement("div"); section.className="world-section";
-    section.innerHTML=`<h3>${level.icon} ${level.world}</h3>`;
-    const grid=document.createElement("div"); grid.className="level-grid";
     const unlocked=level.id<=state.unlocked, result=state.completed[level.id];
     const btn=document.createElement("button");
-    btn.className="level-card"+(!unlocked?" locked":"")+(result?" completed":""); btn.disabled=!unlocked;
-    btn.innerHTML=`<div class="num">Level ${level.id}</div><small>${level.title}</small><div class="stars-mini">${result?"⭐".repeat(result.stars)+"☆".repeat(3-result.stars):(unlocked?"▶ Mula":"🔒 Terkunci")}</div>`;
-    btn.onclick=()=>startLevel(level.id); grid.appendChild(btn); section.appendChild(grid); map.appendChild(section);
+    btn.className="map-hotspot world-"+level.id+(!unlocked?" locked":"")+(result?" completed":"");
+    btn.style.left=positions[level.id].left+"%"; btn.style.top=positions[level.id].top+"%"; btn.disabled=!unlocked;
+    btn.setAttribute("aria-label",`${unlocked?"Buka":"Terkunci"} Level ${level.id}: ${level.title}`);
+    btn.title=`Level ${level.id} — ${level.title}`;
+    btn.innerHTML=`<span class="hotspot-num">${level.id}</span><span class="hotspot-status">${result?"⭐".repeat(result.stars):(unlocked?"MULA":"🔒")}</span>`;
+    btn.onclick=()=>startLevel(level.id); visual.appendChild(btn);
   });
+  scroller.appendChild(visual); map.append(hint,scroller);
 }
 function rankForXp(xp){
   if(xp>=250)return["👑","BIJAK BACA MASTER"];
