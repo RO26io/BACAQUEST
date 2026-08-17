@@ -73,7 +73,8 @@ button:hover{transform:translateY(-1px)}
 .game-meta{display:flex;justify-content:space-between;color:var(--muted);font-weight:700}
 .challenge-type{margin:22px auto 10px;display:inline-block;padding:6px 12px;border-radius:999px;background:#ede9fe;color:#5b21b6;font-size:.82rem;font-weight:900}
 #questionText{font-size:clamp(1.6rem,5vw,2.4rem);margin:12px 0 24px}
-.question-image{font-size:4rem;min-height:10px}
+.question-image{display:none;align-items:center;justify-content:center;width:132px;height:132px;margin:12px auto 24px;border:3px solid #dbeafe;border-radius:28px;background:linear-gradient(145deg,#eff6ff,#fff7ed);font-size:5.5rem;line-height:1;box-shadow:0 12px 28px rgba(37,99,235,.14)}
+.question-image.visible{display:flex}
 .answer-area{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:12px;max-width:680px;margin:0 auto}
 .answer-btn{background:#fff;border:2px solid #ddd6fe;color:#312e81;font-size:1.08rem;padding:16px}
 .answer-btn.correct{background:#ecfdf5;border-color:#34d399;color:#065f46}

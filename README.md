@@ -6,13 +6,16 @@ Permainan web literasi berdasarkan struktur Buku Poket Bijak Baca.
 1. Ekstrak fail ZIP.
 2. Buka `index.html` menggunakan Chrome / Edge.
 3. Masukkan nama murid.
-4. Main Level 1 hingga Level 33.
+4. Main Level 1 hingga Level 5.
 
 Tidak memerlukan pemasangan server.
 
 ## Fungsi
-- 33 level.
-- 9 dunia pembelajaran.
+- 5 level pembelajaran berperingkat.
+- Padanan huruf kecil dan huruf besar.
+- Pengenalan suku kata dan perkataan.
+- Perkataan KV + KV + KV.
+- Ayat mudah isi tempat kosong dengan gambar.
 - XP, coin, nyawa, bintang dan streak.
 - Power-up: Hint, Shield, Skip, Double XP.
 - Level unlocking.
