@@ -61,6 +61,7 @@ let currentLevel = null;
 let questions = [];
 let qIndex = 0, lives = 3, correct = 0, earnedXp = 0, earnedCoins = 0, timeLeft = 20;
 let timer = null, answered = false, shieldActive = false, doubleActive = false;
+let selectedMatchLetter = null, matchedLetters = new Set();
 const $ = id => document.getElementById(id);
 
 function loadState(){
@@ -131,24 +132,78 @@ function renderTeacher(){
 }
 
 function shuffle(arr){return [...arr].sort(()=>Math.random()-.5);}
-function buildQuestions(level){return level.questions.map(([prompt,answer,options,image,imageLabel])=>({prompt,answer,options:shuffle(options),image,imageLabel}));}
+function buildQuestions(level){
+  if(level.id===1) return [{type:"match",prompt:"Seret dan padankan huruf besar dengan huruf kecil.",letters:"abcdefghijkl".split("")}];
+  return level.questions.map(([prompt,answer,options,image,imageLabel])=>({type:"choice",prompt,answer,options:shuffle(options),image,imageLabel}));
+}
 function startLevel(id){
   currentLevel=LEVELS.find(l=>l.id===id); if(!currentLevel)return;
   questions=buildQuestions(currentLevel); qIndex=0; lives=3; correct=0; earnedXp=0; earnedCoins=0; answered=false; shieldActive=false; doubleActive=false;
+  selectedMatchLetter=null; matchedLetters=new Set();
   $("levelTitle").textContent=`Level ${id} — ${currentLevel.title}`; $("worldTitle").textContent=currentLevel.world;
+  document.querySelector(".power-bar").classList.toggle("hidden",id===1);
   updatePowerUI(); showScreen("gameScreen"); renderQuestion();
 }
 function updatePowerUI(){ $("hintCount").textContent=state.powers.hint; $("shieldCount").textContent=state.powers.shield; $("skipCount").textContent=state.powers.skip; $("doubleCount").textContent=state.powers.double; }
 function renderQuestion(){
   clearInterval(timer); answered=false; $("nextQuestionBtn").classList.add("hidden"); $("feedback").textContent=""; $("feedback").className="feedback";
+  $("nextQuestionBtn").textContent="Soalan Seterusnya";
   $("questionCounter").textContent=`${qIndex+1}/${questions.length}`; $("livesDisplay").textContent="❤️".repeat(lives)+"🖤".repeat(3-lives);
   const q=questions[qIndex];
   $("challengeType").textContent=currentLevel.id===1?"🔤 PADANKAN HURUF":currentLevel.id===5?"🖼️ ISI TEMPAT KOSONG":"🎯 PILIH JAWAPAN";
   $("questionText").textContent=q.prompt;
   const image=$("questionImage"); image.textContent=q.image||""; image.setAttribute("role",q.image?"img":"presentation"); image.setAttribute("aria-label",q.imageLabel||""); image.classList.toggle("visible",!!q.image);
   const area=$("answerArea"); area.innerHTML="";
+  area.classList.toggle("match-mode",q.type==="match");
+  if(q.type==="match"){
+    renderMatchBoard(area,q.letters);
+    startTimer(120);
+    return;
+  }
   q.options.forEach(opt=>{const b=document.createElement("button"); b.className="answer-btn"; b.textContent=opt; b.onclick=()=>answerChoice(b,opt,q.answer); area.appendChild(b);});
   startTimer(currentLevel.id===5?30:20);
+}
+function renderMatchBoard(area,letters){
+  const board=document.createElement("div"); board.className="letter-match-board";
+  const targets=document.createElement("div"); targets.className="letter-target-grid";
+  letters.forEach(letter=>{
+    const pair=document.createElement("div"); pair.className="letter-pair";
+    const lower=document.createElement("div"); lower.className="lower-letter-card"; lower.textContent=letter;
+    const slot=document.createElement("button"); slot.className="letter-drop-slot"; slot.type="button"; slot.dataset.letter=letter.toUpperCase(); slot.setAttribute("aria-label",`Petak jawapan untuk huruf ${letter}`);
+    slot.ondragover=event=>event.preventDefault();
+    slot.ondrop=event=>{event.preventDefault();placeMatchLetter(event.dataTransfer.getData("text/plain"),slot);};
+    slot.onclick=()=>{if(selectedMatchLetter)placeMatchLetter(selectedMatchLetter,slot);};
+    pair.append(lower,slot); targets.appendChild(pair);
+  });
+  const instruction=document.createElement("p"); instruction.className="match-instruction"; instruction.textContent="Seret atau ketik huruf besar, kemudian letakkan pada petak hijau yang betul.";
+  const bank=document.createElement("div"); bank.className="uppercase-bank"; bank.setAttribute("aria-label","Pilihan huruf besar");
+  shuffle(letters.map(letter=>letter.toUpperCase())).forEach(letter=>{
+    const tile=document.createElement("button"); tile.className="uppercase-tile"; tile.type="button"; tile.textContent=letter; tile.draggable=true; tile.dataset.letter=letter;
+    tile.ondragstart=event=>event.dataTransfer.setData("text/plain",letter);
+    tile.onclick=()=>selectMatchTile(tile,letter);
+    bank.appendChild(tile);
+  });
+  board.append(targets,instruction,bank); area.appendChild(board);
+}
+function selectMatchTile(tile,letter){
+  document.querySelectorAll(".uppercase-tile").forEach(item=>item.classList.remove("selected"));
+  selectedMatchLetter=letter; tile.classList.add("selected");
+  showFeedback(`Huruf ${letter} dipilih. Cari huruf kecil yang sepadan.`,true);
+}
+function placeMatchLetter(letter,slot){
+  if(!letter||answered||matchedLetters.has(letter))return;
+  if(slot.dataset.letter!==letter){
+    slot.classList.remove("shake"); void slot.offsetWidth; slot.classList.add("shake");
+    showFeedback(`Cuba lagi. Huruf ${letter} belum sepadan.`,false); return;
+  }
+  matchedLetters.add(letter); selectedMatchLetter=null; slot.textContent=letter; slot.classList.add("filled"); slot.disabled=true;
+  document.querySelector(`.uppercase-tile[data-letter="${letter}"]`)?.remove();
+  showFeedback(`✅ Betul! ${letter.toLowerCase()} dipadankan dengan ${letter}.`,true);
+  if(matchedLetters.size===12){
+    answered=true; clearInterval(timer); correct=1; award(25,10);
+    showFeedback("🌟 Hebat! Semua 12 huruf berjaya dipadankan!",true);
+    $("nextQuestionBtn").textContent="Lihat Keputusan"; $("nextQuestionBtn").classList.remove("hidden");
+  }
 }
 function startTimer(seconds){timeLeft=seconds; $("timerDisplay").textContent=timeLeft; timer=setInterval(()=>{timeLeft--; $("timerDisplay").textContent=timeLeft; if(timeLeft<=0){clearInterval(timer); if(!answered)handleWrong("Masa tamat!");}},1000);}
 function award(baseXp,coins=1){earnedXp+=doubleActive?baseXp*2:baseXp; earnedCoins+=coins; doubleActive=false;}
